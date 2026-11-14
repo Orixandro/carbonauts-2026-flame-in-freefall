@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from google import genai
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
 
 # 1. Configurar la página de Streamlit
@@ -20,14 +20,14 @@ if not api_key:
 # Configurar el entorno para Google GenAI
 os.environ["GEMINI_API_KEY"] = api_key
 
-# 3. Inicializar los modelos para LlamaIndex (Usando Gemini y embeddings locales ligeros)
+# 3. Inicializar los modelos de LlamaIndex usando exclusivamente la API de Gemini
 @st.cache_resource
 def inicializar_rag():
-    # Usar Gemini como modelo generativo
-    llm = Gemini(model="models/gemini-1.5-flash", api_key=api_key)
+    # Modelo generativo de Gemini
+    llm = Gemini(model="models/gemini-2.5-flash", api_key=api_key)
     
-    # Usar un modelo de embeddings ligero de HuggingFace que corre gratis en local
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    # Modelo de embeddings oficial de Google por API (cero espacio local requerido)
+    embed_model = GeminiEmbedding(model_name="models/text-embedding-004", api_key=api_key)
     
     Settings.llm = llm
     Settings.embed_model = embed_model

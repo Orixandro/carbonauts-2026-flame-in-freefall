@@ -1,5 +1,7 @@
 streamlit
 google-genai
 llama-index
+llama-index-embeddings-gemini
+llama-index-llms-gemini
 chromadb
 pypdf
