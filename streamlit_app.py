@@ -5,6 +5,23 @@ from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
 from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
 
+import nltk
+
+# 1. Configurar un directorio seguro para NLTK en el usuario para evitar el aviso de permisos
+nltk_data_dir = os.path.expanduser('~/nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.insert(0, nltk_data_dir)
+
+# 2. Descargar automáticamente los recursos necesarios si no están presentes
+for resource in ['stopwords', 'punkt']:
+    try:
+        if resource == 'stopwords':
+            nltk.data.find('corpora/stopwords')
+        else:
+            nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download(resource, download_dir=nltk_data_dir, quiet=True)
+
 # 1. Configurar la página de Streamlit
 st.set_page_config(page_title="Flame in Freefall - NASA RAG", page_icon="🚀", layout="wide")
 
@@ -27,7 +44,7 @@ def inicializar_rag():
     llm = Gemini(model="models/gemini-2.5-flash", api_key=api_key)
     
     # Modelo de embeddings oficial de Google por API (cero espacio local requerido)
-    embed_model = GeminiEmbedding(model_name="models/text-embedding-004", api_key=api_key)
+    embed_model = GeminiEmbedding(model_name="gemini-embedding-2", api_key=api_key)
     
     Settings.llm = llm
     Settings.embed_model = embed_model
