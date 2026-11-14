@@ -8,7 +8,7 @@ from llama_index.llms.gemini import Gemini
 # 1. Configurar la página de Streamlit
 st.set_page_config(page_title="Flame in Freefall - NASA RAG", page_icon="🚀", layout="wide")
 
-st.title("🔥 Flame in Freefall: SI-Powered Fire Safety Insights")
+st.title("Flame in Freefall: SI-Powered Fire Safety Insights")
 st.markdown("Explora los datos de combustión en microgravedad de la NASA mediante Inteligencia Artificial.")
 
 # 2. Configurar la clave de API desde los secretos de Streamlit
