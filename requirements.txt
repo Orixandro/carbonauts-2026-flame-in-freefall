@@ -1,0 +1,5 @@
+streamlit
+google-genai
+llama-index
+chromadb
+pypdf
