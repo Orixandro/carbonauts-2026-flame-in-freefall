@@ -1,7 +1,10 @@
-streamlit
-google-genai
-llama-index
-llama-index-embeddings-gemini
+streamlit>=1.30.0
+google-genai>=0.1.0
+llama-index>=0.10.0
 llama-index-llms-gemini
+llama-index-embeddings-huggingface
+sentence-transformers
 chromadb
 pypdf
+nltk
+pymupdf

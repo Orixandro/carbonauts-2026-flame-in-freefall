@@ -1,1 +1,5 @@
-.streamlit
+.streamlit/
+venv/
+vector_store/
+.chroma_db/
+debug_pdf.py
