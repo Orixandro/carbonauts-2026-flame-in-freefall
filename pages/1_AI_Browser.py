@@ -34,6 +34,13 @@ st.set_page_config(page_title="Flame in Freefall - Carbonauts", page_icon="🚀"
 
 st.title("Flame in Freefall: SI-Powered Fire Safety Insights")
 st.markdown("Explore NASA's microgravity combustion data using Artificial Intelligence.")
+st.markdown(
+    '<p style="color: #808080; font-size: 0.85em; font-style: italic;">'
+    '<strong>Disclaimer:</strong> This model has been trained exclusively using files from research studies 117, 159, and 10. '
+    'The AI model is not exhaustive and may omit certain information in some cases.'
+    '</p>',
+    unsafe_allow_html=True
+)
 
 api_key = st.secrets.get("GEMINI_API_KEY")
 if not api_key:

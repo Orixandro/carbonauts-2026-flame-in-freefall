@@ -31,7 +31,7 @@ def show_about_page():
                           "to build a powerful, rigorous, and intuitive tool:",
             "irune_role": "**Project Leader & Aerospace Safety Specialist**",
             "irune_form": "- **Background:** Industrial Technology Engineering student.",
-            "irune_desc": "- **Role:** Directs general team coordination, schedule planning, and the final pitch presentation. "
+            "irune_desc": "- **Role:** Directs general team coordination, and schedule planning. "
                           "Additionally, she leads the technical validation of experimental data on microgravity combustion and flammability.",
             "haritz_role": "**Team Management, Art Direction & Quality Control**",
             "haritz_form": "- **Background:** Industrial Technology Engineering (Master's student).",
@@ -65,8 +65,8 @@ def show_about_page():
                           "para construir una herramienta potente, rigurosa e intuitiva:",
             "irune_role": "**Líder de Proyecto y Especialista en Seguridad Aeroespacial**",
             "irune_form": "- **Formación:** Estudiante de Ingeniería en Tecnología Industrial.",
-            "irune_desc": "- **Rol:** Dirige la coordinación general del equipo, la planificación del cronograma "
-                          "y la presentación del pitch final. Además, lidera la validación técnica de los datos "
+            "irune_desc": "- **Rol:** Dirige la coordinación general del equipo y la planificación del cronograma "
+                          " Además, lidera la validación técnica de los datos. "
                           "experimentales sobre combustión en microgravedad e inflamabilidad.",
             "haritz_role": "**Gestión de Equipo, Dirección de Arte y Control de Calidad**",
             "haritz_form": "- **Formación:** Ingeniero en Tecnología Industrial (estudiante de Máster).",
