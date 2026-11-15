@@ -12,12 +12,12 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.gemini import Gemini
 import nltk
 
-# 1. Configurar un directorio seguro para NLTK en el usuario para evitar el aviso de permisos
+# Configuración básica de NLTK
 nltk_data_dir = os.path.expanduser('~/nltk_data')
 os.makedirs(nltk_data_dir, exist_ok=True)
-nltk.data.path.insert(0, nltk_data_dir)
+if nltk_data_dir not in nltk.data.path:
+    nltk.data.path.append(nltk_data_dir)
 
-# 2. Descargar automáticamente los recursos necesarios si no están presentes
 for resource in ['stopwords', 'punkt']:
     try:
         if resource == 'stopwords':
@@ -30,39 +30,40 @@ for resource in ['stopwords', 'punkt']:
 case_loaded = False
 case_created = False
 
-# 3. Configurar la página de Streamlit
 st.set_page_config(page_title="Flame in Freefall - Carbonauts", page_icon="🚀", layout="wide")
 
 st.title("Flame in Freefall: SI-Powered Fire Safety Insights")
 st.markdown("Explore NASA's microgravity combustion data using Artificial Intelligence.")
 
-# 4. Configurar la clave de API desde los secretos de Streamlit
 api_key = st.secrets.get("GEMINI_API_KEY")
 if not api_key:
     st.error("GEMINI_API_KEY not configured.")
     st.stop()
 
 hf_token = st.secrets.get("HF_TOKEN")
-
-# Configurar el entorno para Google GenAI
 os.environ["GEMINI_API_KEY"] = api_key
-
 if hf_token:
     os.environ["HF_TOKEN"] = hf_token
 
-# 5. Inicializar el RAG: HuggingFace local para embeddings + Gemini Cloud para respuestas
 @st.cache_resource
 def inicializar_rag():
     global case_loaded
     global case_created
-    # Modelo generativo de Gemini en la nube para redactar respuestas
+    
+    # LLM en la nube
     llm = Gemini(model="models/gemini-3.5-flash-lite", api_key=api_key)
     
-    # Modelo de embeddings ejecutándose localmente (evita límites de cuota en la API)
-    embed_model = HuggingFaceEmbedding(model_name="all-MiniLM-L6-v2")
+    # --- CAMBIO CLAVE: Modelo de Embeddings de Alta Gama ---
+    # Usamos BAAI/bge-large-en-v1.5 para una comprensión semántica y científica superior
+    # embed_model = HuggingFaceEmbedding(model_name="all-mpnet-base-v2")
+    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-large-en-v1.5")
     
     Settings.llm = llm
     Settings.embed_model = embed_model
+    
+    # Parámetros de fragmentación de alta precisión
+    Settings.chunk_size = 512
+    Settings.chunk_overlap = 64
 
     persist_dir = "./vector_store"
     
@@ -74,18 +75,26 @@ def inicializar_rag():
         if os.path.exists("data") and os.listdir("data"):
             cleaned_documents = []
             
-            # Recorremos los PDFs de la carpeta data usando PyMuPDF (pymupdf)
             for file_name in os.listdir("data"):
                 if file_name.lower().endswith(".pdf"):
                     file_path = os.path.join("data", file_name)
                     doc_pymupdf = pymupdf.open(file_path)
                     
-                    for page_num in range(len(doc_pymupdf)):
+                    # --- FILTRO ANTI-DEDICATORIAS ---
+                    # Nos saltamos las primeras páginas (portada, índice, dedicatorias suelen estar entre la 1 y la 4 o 5)
+                    # Ajusta este rango si tu paper empieza antes o después.
+                    # pagina_inicio = min(4, len(doc_pymupdf) - 1)
+                    
+                    for page_num in range(0, len(doc_pymupdf)):
                         page = doc_pymupdf[page_num]
                         text = page.get_text()
                         
-                        # Limpiamos caracteres extraños y nos aseguramos de que no esté vacía
-                        if text and len(text.strip()) > 20:
+                        if text and len(text.strip()) > 30:
+                            # Evitar indexar páginas que traten exclusivamente de agradecimientos o dedicatorias
+                            lower_text = text.lower()
+                            if "dedication" in lower_text or "acknowledgments" in lower_text and len(text.strip()) < 500:
+                                continue
+                                
                             safe_text = text.encode("utf-8", "ignore").decode("utf-8")
                             cleaned_documents.append(
                                 Document(
@@ -103,24 +112,23 @@ def inicializar_rag():
         else:
             return None
             
-    return index.as_query_engine(similarity_top_k=5)
+    return index.as_query_engine(similarity_top_k=6)
 
 query_engine = inicializar_rag()
 
-# 6. Interfaz de Chat / Consultas
 if query_engine is None:
     st.warning("No valid documents found in `data/`. Scientific PDFs missing.")
 else:
     if case_loaded:
         st.success("Existing model found and loaded successfully!")
     if case_created:
-        st.success("Knowledge base successfully loaded and vectorized locally!")
+        st.success("Knowledge base successfully loaded and vectorized locally with BGE-Large!")
     
     pregunta = st.text_input("Ask a question about fire safety in microgravity:")
     
     if st.button("Query RAG 🔎"):
         if pregunta:
-            with st.spinner("Analyzing NASA research with Gemini..."):
+            with st.spinner("Analyzing NASA research with BGE-Large & Gemini..."):
                 respuesta = query_engine.query(pregunta)
                 st.subheader("Answer:")
                 st.write(str(respuesta))
