@@ -40,7 +40,7 @@ def show_about_page():
 
     with col1:
         with st.container(border=True):
-            st.subheader("👩‍🚀 Irune")
+            st.subheader("Irune")
             st.markdown("**Líder de Proyecto y Especialista en Seguridad Aeroespacial**")
             st.markdown("- **Formación:** Estudiante de Ingeniería en Tecnología Industrial.")
             st.markdown(
@@ -50,7 +50,7 @@ def show_about_page():
             )
 
         with st.container(border=True):
-            st.subheader("👨‍💻 Haritz")
+            st.subheader("Haritz")
             st.markdown("**Gestión de Equipo, Dirección de Arte y Control de Calidad**")
             st.markdown("- **Formación:** Ingeniero en Tecnología Industrial (estudiante de Máster).")
             st.markdown(
@@ -61,7 +61,7 @@ def show_about_page():
 
     with col2:
         with st.container(border=True):
-            st.subheader("👨‍🔬 Alejandro")
+            st.subheader("Alejandro")
             st.markdown("**Ingeniero de Datos, IA y Diseñador UX/UI**")
             st.markdown("- **Formación:** Ingeniero en Tecnología Industrial (estudiante de Máster).")
             st.markdown(
@@ -71,7 +71,7 @@ def show_about_page():
             )
 
         with st.container(border=True):
-            st.subheader("👨🎨 Ugaitz")
+            st.subheader("Ugaitz")
             st.markdown("**Director de Arte, Diseño Gráfico y Producción Audiovisual**")
             st.markdown("- **Formación:** Estudiante de Diseño Gráfico.")
             st.markdown(
