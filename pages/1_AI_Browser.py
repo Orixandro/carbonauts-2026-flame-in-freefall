@@ -34,12 +34,12 @@ case_created = False
 st.set_page_config(page_title="Flame in Freefall - Carbonauts", page_icon="🚀", layout="wide")
 
 st.title("Flame in Freefall: SI-Powered Fire Safety Insights")
-st.markdown("Explora los datos de combustión en microgravedad de la NASA mediante Inteligencia Artificial.")
+st.markdown("Explore NASA's microgravity combustion data using Artificial Intelligence.")
 
 # 4. Configurar la clave de API desde los secretos de Streamlit
 api_key = st.secrets.get("GEMINI_API_KEY")
 if not api_key:
-    st.error("Falta configurar la GEMINI_API_KEY en los secretos de Streamlit.")
+    st.error("GEMINI_API_KEY not configured.")
     st.stop()
 
 hf_token = st.secrets.get("HF_TOKEN")
@@ -109,20 +109,20 @@ query_engine = inicializar_rag()
 
 # 6. Interfaz de Chat / Consultas
 if query_engine is None:
-    st.warning("⚠️ No se encontraron documentos válidos en la carpeta `data/`. Sube algunos PDFs de investigación para empezar.")
+    st.warning("No valid documents found in `data/`. Scientific PDFs missing.")
 else:
     if case_loaded:
-        st.success("¡Modelo ya existente encontrado y cargado exitosamente!")
+        st.success("Existing model found and loaded successfully!")
     if case_created:
-        st.success("¡Base de conocimiento cargada correctamente y vectorizada en local!")
+        st.success("Knowledge base successfully loaded and vectorized locally!")
     
-    pregunta = st.text_input("Haz una pregunta sobre seguridad contra incendios en microgravedad:")
+    pregunta = st.text_input("Ask a question about fire safety in microgravity:")
     
-    if st.button("Consultar RAG"):
+    if st.button("Query RAG 🔎"):
         if pregunta:
-            with st.spinner("Analizando investigaciones de la NASA con Gemini..."):
+            with st.spinner("Analyzing NASA research with Gemini..."):
                 respuesta = query_engine.query(pregunta)
-                st.subheader("Respuesta:")
+                st.subheader("Answer:")
                 st.write(str(respuesta))
         else:
-            st.warning("Por favor, escribe una pregunta.")
+            st.warning("Please write a question.")
