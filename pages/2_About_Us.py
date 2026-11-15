@@ -3,7 +3,7 @@ import streamlit as st
 def show_about_page():
     # Configuración de la página (opcional si ya se define en el archivo principal)
     st.set_page_config(
-        page_title="Sobre Nosotros — Carbonauts",
+        page_title="About us - Carbonauts",
         page_icon="🚀",
         layout="wide"
     )
